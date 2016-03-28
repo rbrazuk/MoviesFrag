@@ -8,7 +8,7 @@ public class Movie {
     private int rating;
     private String yearReleased;
     private String director;
-    private boolean watched;
+    private boolean isOnWatchList;
     private String genre;
     private String dateWatched;
 
@@ -58,12 +58,12 @@ public class Movie {
         this.director = director;
     }
 
-    public boolean isWatched() {
-        return watched;
+    public boolean isOnWatchList() {
+        return isOnWatchList;
     }
 
-    public void setWatched(boolean watched) {
-        this.watched = watched;
+    public void setIsOnWatchList(boolean isOnWatchList) {
+        this.isOnWatchList = isOnWatchList;
     }
 
     public String getGenre() {
