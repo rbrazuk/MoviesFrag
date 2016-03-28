@@ -16,10 +16,14 @@ public class Movie {
 
     }
 
-    public Movie(String title, int rating, String director) {
+    public Movie(String title, int rating, String yearReleased) {
         this.title = title;
         this.rating = rating;
-        this.director = director;
+        this.yearReleased = yearReleased;
+    }
+
+    public Movie(String title) {
+        this.title = title;
     }
 
     public String getTitle() {

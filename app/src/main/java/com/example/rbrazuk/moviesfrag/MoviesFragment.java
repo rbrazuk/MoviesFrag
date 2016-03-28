@@ -21,7 +21,7 @@ public class MoviesFragment extends Fragment {
 
     ListView lvMovies;
     TextView tvTitle;
-    TextView tvDirector;
+    TextView tvYear;
     TextView tvRating;
 
     ArrayList<Movie> mMovies;
@@ -43,8 +43,8 @@ public class MoviesFragment extends Fragment {
 
         mMovies = new ArrayList<>();
 
-        mMovies.add(new Movie("Star Wars", 5, "George Lucas"));
-        mMovies.add(new Movie("Blade Runner",4,"Ridley Scott"));
+        mMovies.add(new Movie("Star Wars", 5, "1977"));
+        mMovies.add(new Movie("Blade Runner",4,"1982"));
 
 
 
@@ -86,11 +86,11 @@ public class MoviesFragment extends Fragment {
             }
 
             tvTitle = (TextView) convertView.findViewById(R.id.tv_title);
-            tvDirector = (TextView) convertView.findViewById(R.id.tv_director);
+            tvYear = (TextView) convertView.findViewById(R.id.tv_year);
             tvRating = (TextView) convertView.findViewById(R.id.tv_rating);
 
             tvTitle.setText(movie.getTitle());
-            tvDirector.setText(movie.getDirector());
+            tvYear.setText(movie.getYearReleased());
             tvRating.setText(movie.getRating() + "");
 
             return convertView;
