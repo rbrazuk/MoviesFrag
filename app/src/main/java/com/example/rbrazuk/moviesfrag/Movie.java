@@ -10,9 +10,16 @@ public class Movie {
     private String director;
     private boolean watched;
     private String genre;
+    private String dateWatched;
 
     public Movie() {
 
+    }
+
+    public Movie(String title, int rating, String director) {
+        this.title = title;
+        this.rating = rating;
+        this.director = director;
     }
 
     public String getTitle() {
@@ -61,5 +68,13 @@ public class Movie {
 
     public void setGenre(String genre) {
         this.genre = genre;
+    }
+
+    public String getDateWatched() {
+        return dateWatched;
+    }
+
+    public void setDateWatched(String dateWatched) {
+        this.dateWatched = dateWatched;
     }
 }

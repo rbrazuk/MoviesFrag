@@ -1,34 +1,39 @@
 package com.example.rbrazuk.moviesfrag;
 
-import android.app.FragmentTransaction;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-public class MainActivity extends AppCompatActivity {
-
-    FragmentPagerAdapter mFragmentPagerAdapter;
+/**
+ * Created by rossbrazuk1 on 3/28/16.
+ */
+public class ListFragment extends Fragment {
+    FragmentPagerAdapter adapterViewPager;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        ViewPager viewPager = (ViewPager)findViewById(R.id.vp_movies);
-        mFragmentPagerAdapter = new MoviesPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(mFragmentPagerAdapter);
 
 
 
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+
+        return inflater.inflate(R.layout.fragment_list,container,false);
+    }
+
     public static class MoviesPagerAdapter extends FragmentPagerAdapter {
         private static int NUM_PAGES = 2;
-
-        private static final String[] TITLES = new String[] {"Movies","Watchlist"};
 
         public MoviesPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -53,7 +58,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return TITLES[position].toUpperCase();
+            return "Page" + position;
         }
     }
+
 }
