@@ -1,29 +1,26 @@
 package com.example.rbrazuk.moviesfrag;
 
-/**
- * Created by rossbrazuk1 on 3/24/16.
- */
+
+import java.util.UUID;
+
 public class Movie {
     private String title;
     private int rating;
     private String yearReleased;
     private String director;
-    private boolean isOnWatchList;
-    private String genre;
-    private String dateWatched;
+    private String id;
+    private String movieId;
+
+    public String getMovieId() {
+        return movieId;
+    }
+
+    public void setMovieId(String movieId) {
+        this.movieId = movieId;
+    }
 
     public Movie() {
 
-    }
-
-    public Movie(String title, int rating, String yearReleased) {
-        this.title = title;
-        this.rating = rating;
-        this.yearReleased = yearReleased;
-    }
-
-    public Movie(String title) {
-        this.title = title;
     }
 
     public String getTitle() {
@@ -58,27 +55,11 @@ public class Movie {
         this.director = director;
     }
 
-    public boolean isOnWatchList() {
-        return isOnWatchList;
+    public String getId() {
+        return id;
     }
 
-    public void setIsOnWatchList(boolean isOnWatchList) {
-        this.isOnWatchList = isOnWatchList;
-    }
-
-    public String getGenre() {
-        return genre;
-    }
-
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
-    public String getDateWatched() {
-        return dateWatched;
-    }
-
-    public void setDateWatched(String dateWatched) {
-        this.dateWatched = dateWatched;
+    public void setId(String id) {
+        this.id = id;
     }
 }

@@ -7,23 +7,27 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.firebase.client.Firebase;
+import com.firebase.ui.FirebaseListAdapter;
 
 import java.util.ArrayList;
 
-/**
- * Created by rossbrazuk1 on 3/28/16.
- */
 public class WatchListFragment extends Fragment {
 
     ListView lvWatchlist;
     TextView tvTitle;
     TextView yearReleased;
+    CheckBox cbWatchList;
 
-
-    ArrayList<Movie> mWatchlist;
+    FirebaseListAdapter<Movie> mFirebaseListAdapter;
 
     public static WatchListFragment newInstance(int page, String title) {
         WatchListFragment fragment = new WatchListFragment();
@@ -38,9 +42,7 @@ public class WatchListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mWatchlist = new ArrayList<>();
-        mWatchlist.add(new Movie("Cloud Atlas"));
-        mWatchlist.add(new Movie("Midnight Special"));
+
     }
 
     @Nullable
@@ -49,38 +51,55 @@ public class WatchListFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_watchlist, container, false);
 
-        lvWatchlist = (ListView) view.findViewById(R.id.lv_watchlist);
-        WatchlistAdapter adapter = new WatchlistAdapter(getActivity(),mWatchlist);
-        lvWatchlist.setAdapter(adapter);
+        final Firebase ref = new Firebase("https://moviefragment.firebaseio.com/");
+        final Firebase watchlistRef = ref.child("watchlist");
+
+        lvWatchlist = (ListView)view.findViewById(R.id.lv_watchlist);
+
+        mFirebaseListAdapter = new FirebaseListAdapter<Movie>(getActivity(),Movie.class,R.layout.list_item_watchlist,watchlistRef) {
+            @Override
+            protected void populateView(View view, final Movie movie, int position) {
+                ((TextView)view.findViewById(R.id.tv_title)).setText(movie.getTitle());
+                ((TextView)view.findViewById(R.id.tv_year)).setText(movie.getYearReleased());
+
+                cbWatchList = (CheckBox) view.findViewById(R.id.cb_watched);
+
+                cbWatchList.setFocusable(false);
+
+                cbWatchList.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                        Firebase moveRef = watchlistRef.child(movie.getMovieId());
+                        Firebase moviesRef = ref.child("movies");
+
+
+                        moviesRef.push().setValue(movie);
+                        moveRef.removeValue();
+                        Toast.makeText(getActivity(),movie.getTitle() + " moved to Movies",Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+
+
+        };
+
+        lvWatchlist.setAdapter(mFirebaseListAdapter);
+
+
+        lvWatchlist.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Movie movie = (Movie) parent.getItemAtPosition(position);
+                Toast.makeText(getActivity(), movie.getTitle(), Toast.LENGTH_LONG).show();
+                return true;
+            }
+        });
+
+
 
         return view;
     }
 
-    private class WatchlistAdapter extends ArrayAdapter<Movie> {
 
-        public WatchlistAdapter(Context context, ArrayList<Movie> movies) {
-            super(context,0, movies);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            Movie movie = getItem(position);
-
-            if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_watchlist,parent,false);
-            }
-
-            tvTitle = (TextView) convertView.findViewById(R.id.tv_title);
-            yearReleased = (TextView) convertView.findViewById(R.id.tv_year);
-
-
-            tvTitle.setText(movie.getTitle());
-            yearReleased.setText(movie.getYearReleased());
-
-
-            return convertView;
-
-
-        }
-    }
 }
