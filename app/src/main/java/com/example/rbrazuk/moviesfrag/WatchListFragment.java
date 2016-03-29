@@ -72,9 +72,13 @@ public class WatchListFragment extends Fragment {
 
                         Firebase moveRef = watchlistRef.child(movie.getMovieId());
                         Firebase moviesRef = ref.child("movies");
+                        Firebase newPostRef = moviesRef.push();
+                        String movieId = newPostRef.getKey();
+                        movie.setMovieId(movieId);
+                        newPostRef.setValue(movie);
 
 
-                        moviesRef.push().setValue(movie);
+                        //moviesRef.push().setValue(movie);
                         moveRef.removeValue();
                         Toast.makeText(getActivity(),movie.getTitle() + " moved to Movies",Toast.LENGTH_LONG).show();
                     }

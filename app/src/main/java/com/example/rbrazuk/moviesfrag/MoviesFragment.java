@@ -50,7 +50,7 @@ public class MoviesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //ButterKnife.bind(getActivity());
+
     }
 
     @Nullable
@@ -65,7 +65,7 @@ public class MoviesFragment extends Fragment {
         lvMovies = (ListView) view.findViewById(R.id.lv_movies);
 
 
-        Firebase ref = new Firebase("https://moviefragment.firebaseio.com/");
+        final Firebase ref = new Firebase("https://moviefragment.firebaseio.com/");
         final Firebase moviesRef = ref.child("movies");
 
 
@@ -91,6 +91,7 @@ public class MoviesFragment extends Fragment {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Movie movie = (Movie) parent.getItemAtPosition(position);
 
+                Firebase updatedMoviesRef = new Firebase("https://moviefragment.firebaseio.com/movies/");
                 Firebase deleteRef = moviesRef.child(movie.getMovieId());
 
                 deleteRef.removeValue();
