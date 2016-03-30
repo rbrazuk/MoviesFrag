@@ -9,18 +9,21 @@
 
     <EditText
         android:id="@+id/et_title"
+        android:inputType="textCapWords"
         android:hint="title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <EditText
         android:id="@+id/et_director"
+        android:inputType="textPersonName"
         android:hint="director"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <EditText
         android:id="@+id/et_year"
+        android:inputType="number"
         android:hint="year"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -29,11 +32,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Spinner
-            android:id="@+id/sp_rating"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"></Spinner>
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -50,6 +48,14 @@
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>
+
+        <Spinner
+            android:id="@+id/sp_rating"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:entries="@array/ratings_array"></Spinner>
+
 
 
     </LinearLayout>

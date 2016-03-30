@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,8 +78,6 @@ public class WatchListFragment extends Fragment {
                         movie.setMovieId(movieId);
                         newPostRef.setValue(movie);
 
-
-                        //moviesRef.push().setValue(movie);
                         moveRef.removeValue();
                         Toast.makeText(getActivity(),movie.getTitle() + " moved to Movies",Toast.LENGTH_LONG).show();
                     }
@@ -95,14 +94,20 @@ public class WatchListFragment extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Movie movie = (Movie) parent.getItemAtPosition(position);
-                Toast.makeText(getActivity(), movie.getTitle(), Toast.LENGTH_LONG).show();
+
+                showEditDialog(movie);
                 return true;
             }
         });
 
-
-
         return view;
+    }
+
+    private void showEditDialog(Movie movie) {
+        FragmentManager fm = getFragmentManager();
+        EditMovieDialog editMovieDialog = EditMovieDialog.newInstance(movie.getTitle(),movie.getDirector(),movie.getYearReleased(),movie.getMovieId(),true);
+        editMovieDialog.show(fm, "dialog_edit_movie");
+
     }
 
 

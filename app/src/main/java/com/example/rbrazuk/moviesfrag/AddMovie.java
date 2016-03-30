@@ -1,5 +1,6 @@
 package com.example.rbrazuk.moviesfrag;
 
+import android.content.Intent;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.firebase.client.Firebase;
 
@@ -25,6 +27,7 @@ public class AddMovie extends AppCompatActivity {
     @Bind(R.id.et_director) EditText etDirector;
     @Bind(R.id.bt_save) Button btSave;
     @Bind(R.id.cb_watch_list) CheckBox cbWatchList;
+    @Bind(R.id.sp_rating) Spinner spinnerRating;
 
     Firebase ref;
 
@@ -59,6 +62,13 @@ public class AddMovie extends AppCompatActivity {
         movie.setTitle(etTitle.getText().toString());
         movie.setYearReleased(etYear.getText().toString());
         movie.setDirector(etDirector.getText().toString());
+        if (spinnerRating.getSelectedItem() != "Rating") {
+
+            String selectedRating = (String) spinnerRating.getSelectedItem();
+            int rating = Integer.parseInt(selectedRating);
+            movie.setRating(rating);
+        }
+
 
         String id = String.valueOf(UUID.randomUUID());
         movie.setId(id);
@@ -70,7 +80,6 @@ public class AddMovie extends AppCompatActivity {
             movie.setMovieId(movieId);
             newPostRef.setValue(movie);
 
-
         } else {
             Firebase moviesRef = ref.child("movies");
             Firebase newPostRef = moviesRef.push();
@@ -79,9 +88,8 @@ public class AddMovie extends AppCompatActivity {
             newPostRef.setValue(movie);
         }
 
+        Intent intent = new Intent(AddMovie.this,MainActivity.class);
+        startActivity(intent);
 
     }
-
-
-
 }

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,17 +16,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.client.ChildEventListener;
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.Query;
 import com.firebase.ui.FirebaseListAdapter;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.w3c.dom.Text;
 
-import butterknife.Bind;
+import java.util.ArrayList;
 import butterknife.ButterKnife;
 
 public class MoviesFragment extends Fragment {
@@ -73,6 +70,7 @@ public class MoviesFragment extends Fragment {
         mFirebaseListAdapter = new FirebaseListAdapter<Movie>(getActivity(),Movie.class,R.layout.list_item_movie,moviesRef) {
             @Override
             protected void populateView(View view, Movie movie, int position) {
+
                 ((TextView)view.findViewById(R.id.tv_title)).setText(movie.getTitle());
                 ((TextView)view.findViewById(R.id.tv_year)).setText(movie.getYearReleased());
 
@@ -81,6 +79,14 @@ public class MoviesFragment extends Fragment {
                 } else {
                     ((TextView)view.findViewById(R.id.tv_rating)).setText(movie.getRating() + "");
                 }
+
+                TextView tvRating = (TextView) view.findViewById(R.id.tv_rating);
+                tvRating.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getActivity(),"Rating tapped",Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         };
 
@@ -89,12 +95,14 @@ public class MoviesFragment extends Fragment {
         lvMovies.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Movie movie = (Movie) parent.getItemAtPosition(position);
+                /*Movie movie = (Movie) parent.getItemAtPosition(position);
 
                 Firebase updatedMoviesRef = new Firebase("https://moviefragment.firebaseio.com/movies/");
                 Firebase deleteRef = moviesRef.child(movie.getMovieId());
 
-                deleteRef.removeValue();
+                deleteRef.removeValue();*/
+                Movie movie = (Movie) parent.getItemAtPosition(position);
+                showEditDialog(movie);
 
                 return true;
             }
@@ -109,6 +117,13 @@ public class MoviesFragment extends Fragment {
         super.onDestroy();
         if (mFirebaseListAdapter != null)
         mFirebaseListAdapter.cleanup();
+    }
+
+    private void showEditDialog(Movie movie) {
+        FragmentManager fm = getFragmentManager();
+        EditMovieDialog editMovieDialog = EditMovieDialog.newInstance(movie.getTitle(),movie.getDirector(),movie.getYearReleased(),movie.getMovieId(),false);
+        editMovieDialog.show(fm,"dialog_edit_movie");
+
     }
 
 
