@@ -4,6 +4,7 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -75,6 +76,9 @@ public class EditMovieDialog extends DialogFragment {
                     Firebase ref = new Firebase("https://moviefragment.firebaseio.com/movies/" + id);
                     ref.removeValue();
                 }
+
+                dismissDialog();
+
             }
         });
 
@@ -82,7 +86,7 @@ public class EditMovieDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
 
-                if(isOnWatchList) {
+                if (isOnWatchList) {
                     Firebase ref = new Firebase("https://moviefragment.firebaseio.com/watchlist/" + id);
                     ref.child("title").setValue(etTitle.getText().toString());
                     ref.child("director").setValue(etDirector.getText().toString());
@@ -93,13 +97,14 @@ public class EditMovieDialog extends DialogFragment {
                     ref.child("director").setValue(etDirector.getText().toString());
                     ref.child("yearReleased").setValue(etYear.getText().toString());
                 }
+
+                dismissDialog();
             }
         });
 
         etTitle.setText(title);
         etDirector.setText(director);
         etYear.setText(year);
-
 
     }
 
@@ -116,5 +121,13 @@ public class EditMovieDialog extends DialogFragment {
         window.setGravity(Gravity.CENTER);
 
         super.onResume();
+    }
+
+    public void dismissDialog(){
+        Fragment prev = getFragmentManager().findFragmentByTag("dialog_edit_movie");
+        if (prev != null) {
+            DialogFragment df = (DialogFragment) prev;
+            df.dismiss();
+        }
     }
 }

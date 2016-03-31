@@ -74,7 +74,7 @@ public class MoviesFragment extends Fragment {
                 ((TextView)view.findViewById(R.id.tv_title)).setText(movie.getTitle());
                 ((TextView)view.findViewById(R.id.tv_year)).setText(movie.getYearReleased());
 
-                if (movie.getRating() == 0) {
+                if (movie.getRating() == "") {
                     ((TextView)view.findViewById(R.id.tv_rating)).setText("-");
                 } else {
                     ((TextView)view.findViewById(R.id.tv_rating)).setText(movie.getRating() + "");

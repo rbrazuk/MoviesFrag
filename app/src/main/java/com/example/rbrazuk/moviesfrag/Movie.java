@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public class Movie {
     private String title;
-    private int rating;
+    private String rating;
     private String yearReleased;
     private String director;
     private String id;
@@ -31,11 +31,11 @@ public class Movie {
         this.title = title;
     }
 
-    public int getRating() {
+    public String getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(String rating) {
         this.rating = rating;
     }
 

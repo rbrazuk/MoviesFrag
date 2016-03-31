@@ -7,8 +7,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -20,7 +23,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AddMovie extends AppCompatActivity {
+public class AddMovie extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     @Bind(R.id.et_title) EditText etTitle;
     @Bind(R.id.et_year) EditText etYear;
@@ -41,6 +44,24 @@ public class AddMovie extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ref = new Firebase("https://moviefragment.firebaseio.com/");
+
+        cbWatchList.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (cbWatchList.isChecked()) {
+                    spinnerRating.setEnabled(false);
+                } else if (!cbWatchList.isChecked()) {
+                    spinnerRating.setEnabled(true);
+                }
+            }
+        });
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.ratings_array,android.R.layout.simple_expandable_list_item_1);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinnerRating.setAdapter(adapter);
+        spinnerRating.setOnItemSelectedListener(this);
     }
 
     @Override
@@ -62,16 +83,21 @@ public class AddMovie extends AppCompatActivity {
         movie.setTitle(etTitle.getText().toString());
         movie.setYearReleased(etYear.getText().toString());
         movie.setDirector(etDirector.getText().toString());
-        if (spinnerRating.getSelectedItem() != "Rating") {
 
-            String selectedRating = (String) spinnerRating.getSelectedItem();
-            int rating = Integer.parseInt(selectedRating);
-            movie.setRating(rating);
+        String selectedRating = (String) spinnerRating.getSelectedItem();
+
+        if (selectedRating.equals("Rating")) {
+
+
+            movie.setRating("");
+        } else {
+            movie.setRating(selectedRating);
         }
 
 
         String id = String.valueOf(UUID.randomUUID());
         movie.setId(id);
+
 
         if(cbWatchList.isChecked()) {
             Firebase watchlistRef = ref.child("watchlist");
@@ -90,6 +116,16 @@ public class AddMovie extends AppCompatActivity {
 
         Intent intent = new Intent(AddMovie.this,MainActivity.class);
         startActivity(intent);
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
     }
 }
